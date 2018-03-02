@@ -3,65 +3,47 @@ package edu.jsu.mcis;
 import java.io.*;
 
 public class Main {
-    
+	
     public static void main(String[] args) {
-        
+		
         ClassLoader loader = ClassLoader.getSystemClassLoader();
-        
-        // Get CSV Data
-        
-        StringBuilder csvFile = new StringBuilder();
-        
-        try {
-            
-            BufferedReader reader = new BufferedReader(new InputStreamReader(loader.getResourceAsStream("resources" + File.separator + "grades.csv")));
+        StringBuilder csvContents = new StringBuilder();
+		
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(loader.getResourceAsStream("resources\\grades.csv")))) {
+			
             String line;
-            
+			
             while((line = reader.readLine()) != null) {
-                csvFile.append(line).append('\n');
+                csvContents.append(line + '\n');
             }
-            
+			
         }
-        
+		
         catch(IOException e) { e.printStackTrace(); }
-        
-        String csvFileString = csvFile.toString().trim();
-        
-        // Get JSON Data
-        
-        StringBuilder jsonFile = new StringBuilder();
-        
-        try {
-            
-            BufferedReader reader = new BufferedReader(new InputStreamReader(loader.getResourceAsStream("resources" + File.separator + "grades.json")));            
+		
+        String testCsv = csvContents.toString();
+        StringBuilder jsonContents = new StringBuilder();
+		
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(loader.getResourceAsStream("resources\\grades.json")))) {
+			
             String line;
-            
+			
             while((line = reader.readLine()) != null) {
-                jsonFile.append(line).append('\n');
+                jsonContents.append(line + '\n');
             }
-            
+			
         }
-        
+		
         catch(IOException e) { e.printStackTrace(); }
-        
-        String jsonFileString = jsonFile.toString().trim();
-        
-        // Convert CSV to JSON; Print Results to Console
-        
-        System.out.println("CONVERSION RESULTS (CSV to JSON)");
-        System.out.println("================================");
-
-        String json = Converter.csvToJson(csvFileString);
+		
+        String testJson = jsonContents.toString();
+        String json = Converter.csvToJson(testCsv);
+		
         System.out.println(json);
-        
-        // Convert JSON to CSV; Print Results to Console
-        
-        System.out.println("\nCONVERSION RESULTS (JSON to CSV)");
-        System.out.println("================================");
-        
-        String csv = Converter.jsonToCsv(jsonFileString);
+        System.out.println("\n----------------\n");
+        String csv = Converter.jsonToCsv(testJson);
         System.out.println(csv);
 		
     }
-    
+	
 }
